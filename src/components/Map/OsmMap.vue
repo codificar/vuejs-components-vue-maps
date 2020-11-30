@@ -1,5 +1,5 @@
 <template>
-	<l-map :zoom="zoom" :center="center" style="width: 100%; height: 550px">
+	<l-map :zoom="zoom" :center="center">
 		<l-tile-layer :url="url" :attribution="attribution" />
 		<l-marker v-if="centerMarkerUrl" :lat-lng="center">
 			<l-icon
@@ -41,14 +41,6 @@ export default {
 			attribution:
 				'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 		};
-	},
-
-	mounted() {
-		console.log(this.centerMarkerUrl);
-		/*MapEvents.$on('update-center', center => {
-			console.log('Event update center');
-			this.center = center;
-		});*/
 	},
 };
 </script>
