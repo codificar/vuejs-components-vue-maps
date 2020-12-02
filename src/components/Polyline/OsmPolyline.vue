@@ -1,12 +1,8 @@
 <template>
-	  <l-polyline
-        :lat-lngs="latlngs"
-        :color="this.color"
-      />
+	<l-polyline :lat-lngs="latlngs" :color="this.color" />
 </template>
 
 <script>
-import { latLng } from 'leaflet';
 import { LPolyline } from 'vue2-leaflet';
 
 export default {
@@ -23,12 +19,12 @@ export default {
 		},
 
 		color: {
-			type: String
-		}
+			type: String,
+		},
 	},
 	data() {
 		return {
-			latlngs: this.coordinates ? this.coordinates : []
+			latlngs: this.coordinates ? this.coordinates : [],
 		};
 	},
 };

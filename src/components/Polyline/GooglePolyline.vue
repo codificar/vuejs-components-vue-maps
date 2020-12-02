@@ -1,11 +1,11 @@
 <template>
-  <gmap-polyline
-    v-bind:path.sync="path"
-    v-bind:options="{ strokeColor: this.color }"
-    v-bind:clickable="true"
-    v-on:click="traffic_free1.InfoWindowShown = true"
+	<gmap-polyline
+		v-bind:path.sync="path"
+		v-bind:options="{ strokeColor: this.color }"
+		v-bind:clickable="true"
+		v-on:click="traffic_free1.InfoWindowShown = true"
 	>
-  </gmap-polyline>
+	</gmap-polyline>
 </template>
 
 <script>
@@ -22,13 +22,13 @@ export default {
 		},
 
 		color: {
-			type: String
-		}
+			type: String,
+		},
 	},
-	data () {
-		return { 
+	data() {
+		return {
 			path: this.coordinates ? this.coordinates : [],
-		}
-	}
-}
+		};
+	},
+};
 </script>

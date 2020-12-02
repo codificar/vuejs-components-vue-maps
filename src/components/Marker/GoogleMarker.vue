@@ -75,7 +75,7 @@ export default {
 
 		getInfoWindowContent: function () {
 			if (!this.$slots.default) {
-				return '<div></divs>';
+				return '<div></div>';
 			}
 			return this.$slots.default[0].componentOptions.propsData.html();
 		},

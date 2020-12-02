@@ -1,11 +1,11 @@
 <template>
 	<l-map :zoom="zoom" :center="center">
 		<l-tile-layer :url="url" :attribution="attribution" />
-		<l-marker v-if="centerMarkerUrl" :lat-lng="center">
+		<l-marker v-if="centerMarker" :lat-lng="center">
 			<l-icon
 				:icon-size="[20, 20]"
 				:icon-anchor="[20, 10]"
-				:icon-url="centerMarkerUrl"
+				:icon-url="centerMarker.icon"
 			>
 			</l-icon>
 		</l-marker>
@@ -28,9 +28,8 @@ export default {
 		center: {
 			type: Object,
 		},
-		centerMarkerUrl: {
-			type: String,
-			default: undefined,
+		centerMarker: {
+			type: Object,
 		},
 	},
 	data() {

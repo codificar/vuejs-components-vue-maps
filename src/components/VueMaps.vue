@@ -13,9 +13,8 @@ export default {
 		center: {
 			type: Object,
 		},
-		centerMarkerUrl: {
-			type: String,
-			default: undefined,
+		centerMarker: {
+			type: Object,
 		},
 	},
 	data() {
@@ -26,25 +25,11 @@ export default {
 
 	created() {
 		this.strategyManager = new MapStrategy();
-		/*const google = new Strategy('google', () =>
-			new MapDirector(new MapBuilder()).makeGoogleMap(this.$slots),
-		);
-		const osm = new Strategy('osm', () =>
-			new MapDirector(new MapBuilder()).makeOsmMap(this.$slots, this.$props),
-		);*/
 		const google = new Strategy('google', () => GoogleMap);
 		const osm = new Strategy('osm', () => OsmMap);
 
 		this.strategyManager.addStrategy(google);
 		this.strategyManager.addStrategy(osm);
-	},
-
-	computed: {
-		/*getMap() {
-			console.log('getting map');
-			const strategy = this.strategyManager.getStrategy(this.provider);
-			return strategy.doAction();
-		},*/
 	},
 
 	render(h) {

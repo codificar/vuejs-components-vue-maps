@@ -51,12 +51,15 @@ export default {
 			const icon = this.icon;
 			const tooltip = this.title;
 
-			if (this.$slots.default)
+			if (this.$slots.default) {
 				return h(
 					marker,
 					{ props: { coordinates, tooltip, iconUrl: icon } },
 					this.$slots.default.map(slot => slot),
 				);
+			} else {
+				return h(marker, { props: { coordinates, tooltip, iconUrl: icon } });
+			}
 		}
 		return null;
 	},

@@ -12,9 +12,8 @@ export default {
 		center: {
 			type: Object,
 		},
-		centerMarkerUrl: {
-			type: String,
-			default: undefined,
+		centerMarker: {
+			type: Object,
 		},
 	},
 	data() {
@@ -22,7 +21,7 @@ export default {
 			markers: [],
 			places: [],
 			icon: {
-				url: this.centerMarkerUrl,
+				url: this.centerMarker.icon,
 				size: { width: 20, height: 20, f: 'px', b: 'px' },
 				scaledSize: { width: 20, height: 20, f: 'px', b: 'px' },
 			},
