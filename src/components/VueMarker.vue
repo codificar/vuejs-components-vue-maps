@@ -3,6 +3,14 @@ import GoogleMarker from './Marker/GoogleMarker.vue';
 import OsmMarker from './Marker/OsmMarker.vue';
 
 import { MapStrategy, Strategy } from '../strategy/MapStrategy';
+import { purplePin } from '../constants/icons';
+
+const iconDefault = {
+	url: purplePin,
+	size: [20, 20],
+	anchor: [20, 10],
+	rotation: 0,
+};
 
 export default {
 	name: 'VueMarker',
@@ -22,7 +30,8 @@ export default {
 			default: () => [0, 0],
 		},
 		icon: {
-			type: String,
+			type: Object,
+			default: () => new Object(),
 		},
 		title: {
 			type: String,
@@ -50,15 +59,19 @@ export default {
 			const coordinates = this.coordinates;
 			const icon = this.icon;
 			const tooltip = this.title;
+			Object.assign(this.icon, {
+				...iconDefault,
+				...this.icon,
+			});
 
 			if (this.$slots.default) {
 				return h(
 					marker,
-					{ props: { coordinates, tooltip, iconUrl: icon } },
+					{ props: { coordinates, tooltip, icon } },
 					this.$slots.default.map(slot => slot),
 				);
 			} else {
-				return h(marker, { props: { coordinates, tooltip, iconUrl: icon } });
+				return h(marker, { props: { coordinates, tooltip, icon } });
 			}
 		}
 		return null;

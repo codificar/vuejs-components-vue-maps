@@ -3,7 +3,7 @@
 		<gmap-marker
 			:position="this.coordinates"
 			:title="this.title"
-			:icon="icon"
+			:icon="getIcon"
 			@click="toggleInfoWindow"
 		>
 		</gmap-marker>
@@ -30,8 +30,9 @@ export default {
 			custom: true,
 			default: () => [0, 0],
 		},
-		iconUrl: {
-			type: String,
+		icon: {
+			type: Object,
+			default: () => new Object(),
 		},
 		title: {
 			type: String,
@@ -57,12 +58,35 @@ export default {
 					height: -35,
 				},
 			},
-			icon: {
-				url: this.iconUrl,
-				size: { width: 20, height: 20, f: 'px', b: 'px' },
-				scaledSize: { width: 20, height: 20, f: 'px', b: 'px' },
-			},
 		};
+	},
+	computed: {
+		getIcon() {
+			const url = this.icon.url;
+			const size = {
+				width: this.icon.size[0],
+				height: this.icon.size[1],
+				f: 'px',
+				b: 'px',
+			};
+			const scaledSize = { width: 20, height: 20, f: 'px', b: 'px' };
+			const rotation = this.icon.rotation;
+
+			return { url, size, scaledSize, rotation };
+		},
+	},
+
+	watch: {
+		getIcon() {
+			const url = this.icon.url;
+			let rotation = this.icon.rotation;
+			setTimeout(() => {
+				// eslint-disable-next-line no-undef
+				$(`img[src*="${url}"]`)
+					.parent()
+					.css('transform', 'rotate(' + rotation + 'deg)');
+			}, 50);
+		},
 	},
 
 	methods: {
@@ -82,3 +106,12 @@ export default {
 	},
 };
 </script>
+<style>
+.rotate {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+</style>

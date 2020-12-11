@@ -1,6 +1,11 @@
 <template>
 	<gmap-map :center="center" :zoom="12" style="width: 100%; height: 100%">
-		<gmap-marker :position="this.center" :icon="icon"> </gmap-marker>
+		<gmap-marker
+			v-if="displayCenterMarker"
+			:position="this.center"
+			:icon="icon"
+		>
+		</gmap-marker>
 		<slot />
 	</gmap-map>
 </template>
@@ -14,6 +19,11 @@ export default {
 		},
 		centerMarker: {
 			type: Object,
+			default: () => new Object(),
+		},
+		displayCenterMarker: {
+			type: Boolean,
+			default: true,
 		},
 	},
 	data() {

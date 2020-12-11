@@ -1,10 +1,10 @@
 <template>
 	<l-map :zoom="zoom" :center="center">
 		<l-tile-layer :url="url" :attribution="attribution" />
-		<l-marker v-if="centerMarker" :lat-lng="center">
+		<l-marker v-if="displayCenterMarker" :lat-lng="center">
 			<l-icon
-				:icon-size="[20, 20]"
-				:icon-anchor="[20, 10]"
+				:icon-size="centerMarker.size"
+				:icon-anchor="centerMarker.anchor"
 				:icon-url="centerMarker.icon"
 			>
 			</l-icon>
@@ -15,6 +15,14 @@
 
 <script>
 import { LMap, LMarker, LTileLayer, LIcon } from 'vue2-leaflet';
+import { centerPin } from '../../constants/icons';
+
+const centerMarkerDefault = {
+	icon: centerPin,
+	size: [20, 20],
+	anchor: [20, 10],
+	rotation: 0,
+};
 
 export default {
 	name: 'OsmMap',
@@ -30,6 +38,11 @@ export default {
 		},
 		centerMarker: {
 			type: Object,
+			default: () => new Object(),
+		},
+		displayCenterMarker: {
+			type: Boolean,
+			default: true,
 		},
 	},
 	data() {
@@ -40,6 +53,12 @@ export default {
 			attribution:
 				'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 		};
+	},
+	created() {
+		Object.assign(this.centerMarker, {
+			...centerMarkerDefault,
+			...this.centerMarker,
+		});
 	},
 };
 </script>

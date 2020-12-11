@@ -16,6 +16,10 @@ export default {
 		centerMarker: {
 			type: Object,
 		},
+		displayCenterMarker: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	data() {
 		return {

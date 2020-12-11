@@ -1,5 +1,5 @@
 <template>
-	<l-marker :lat-lng="this.marker" :icon="icon">
+	<l-marker :lat-lng="this.marker" :icon="getIcon">
 		<l-popup v-if="this.tooltip">
 			<div v-html="getInfoWindowContent()"></div>
 		</l-popup>
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { latLng, icon } from 'leaflet';
+import { latLng, icon as LIcon } from 'leaflet';
 import { LMarker, LPopup } from 'vue2-leaflet';
 
 export default {
@@ -25,43 +25,38 @@ export default {
 		tooltip: {
 			type: String,
 		},
-		iconUrl: {
-			type: String,
+		icon: {
+			type: Object,
+			default: () => new Object(),
 		},
 	},
 
 	data() {
 		return {
 			infoContent: '',
+			infoWinOpen: false,
 			infoWindowPos: {
 				lat: 0,
 				lng: 0,
 			},
-			infoWinOpen: false,
-			currentMidx: null,
-			//optional: offset infowindow so it visually sits nicely on top of our marker
-			infoOptions: {
-				pixelOffset: {
-					width: 0,
-					height: -35,
-				},
-			},
-
-			icon: icon({
-				iconUrl: this.iconUrl,
-				iconSize: [20, 20],
-				iconAnchor: [10, 20],
-			}),
-
 			marker: this.coordinates ? latLng(this.coordinates) : null,
 		};
+	},
+
+	computed: {
+		getIcon() {
+			return LIcon({
+				iconUrl: this.icon.url,
+				iconSize: this.icon.size,
+				iconAnchor: this.icon.anchor,
+			});
+		},
 	},
 
 	methods: {
 		toggleInfoWindow: function () {
 			this.infoWindowPos = this.coordinate;
 			this.infoContent = this.getInfoWindowContent();
-
 			this.infoWinOpen = true;
 		},
 		getInfoWindowContent: function () {
