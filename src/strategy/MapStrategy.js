@@ -8,7 +8,10 @@ const MapStrategy = class MapStrategy {
 	}
 
 	getStrategy(name) {
-		return this._strategies.find(strategy => strategy._name === name);
+		const strategy = this._strategies.find(strategy => strategy._name === name);
+		return strategy
+			? strategy
+			: this._strategies.find(strategy => strategy._name === 'osm');
 	}
 };
 

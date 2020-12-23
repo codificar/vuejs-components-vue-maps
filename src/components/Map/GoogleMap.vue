@@ -31,7 +31,7 @@ export default {
 			markers: [],
 			places: [],
 			icon: {
-				url: this.centerMarker.icon,
+				url: this.centerMarker.url,
 				size: { width: 20, height: 20, f: 'px', b: 'px' },
 				scaledSize: { width: 20, height: 20, f: 'px', b: 'px' },
 			},

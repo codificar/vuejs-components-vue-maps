@@ -1,24 +1,31 @@
 # vue-maps
 
 ## Project setup
-```
-npm install
+
+## Install
+
+add in package.json:
+
+```bash
+"vue-maps": "git+https://libs:ofImhksJ@git.codificar.com.br/vuejs-components/vue-maps.git#version",
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+```js
+import * as CodificarMaps from 'vue-maps';
+
+Vue.use(CodificarMaps, {
+    key: window.settings.mapsApiKey,
+});
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Component API
 
-### Lints and fixes files
-```
-npm run lint
-```
+[`<VueMaps />` Component API](docs/vuemaps.md)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[`<VueMarker />` Component API](docs/vuemarker.md)
+
+[`<VueCallout />` Component API](docs/vuecallout.md)
+
+[`<VuePolyline />` Component API](docs/vuepolyline.md)
+
+[`<VueHeatmap />` Component API](docs/vueheatmap.md)

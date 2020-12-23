@@ -5,7 +5,7 @@
 			<l-icon
 				:icon-size="centerMarker.size"
 				:icon-anchor="centerMarker.anchor"
-				:icon-url="centerMarker.icon"
+				:icon-url="centerMarker.url"
 			>
 			</l-icon>
 		</l-marker>
@@ -18,7 +18,7 @@ import { LMap, LMarker, LTileLayer, LIcon } from 'vue2-leaflet';
 import { centerPin } from '../../constants/icons';
 
 const centerMarkerDefault = {
-	icon: centerPin,
+	url: centerPin,
 	size: [20, 20],
 	anchor: [20, 10],
 	rotation: 0,

@@ -6,11 +6,8 @@ import VueCallout from './src/components/VueCallout.vue'
 import VuePolyline from './src/components/VuePolyline.vue'
 
 export function install (Vue, options) {
-	if (!options) {
-		console.error('No Google Map API key provided.');
-		return;
-	}
-	if (options.key) {
+
+	if (options.key && options.provider === 'google') {
 		Vue.use(VueGoogleMaps, {
 			load: {
 				key: options.key,
@@ -18,13 +15,13 @@ export function install (Vue, options) {
 			},
 			installComponents: true,
 		});
-
-		Vue.component(VueMaps.name, VueMaps.default);
-		Vue.component(VueHeatmap.name, VueHeatmap.default);
-		Vue.component(VueMarker.name, VueMarker.default);
-		Vue.component(VueCallout.name, VueCallout.default);
-		Vue.component(VuePolyline.name, VuePolyline.default);
 	}
+
+	Vue.component(VueMaps.name, VueMaps.default);
+	Vue.component(VueHeatmap.name, VueHeatmap.default);
+	Vue.component(VueMarker.name, VueMarker.default);
+	Vue.component(VueCallout.name, VueCallout.default);
+	Vue.component(VuePolyline.name, VuePolyline.default);
 };
 
 export { default as VueMaps } from './src/components/VueMaps.vue'
