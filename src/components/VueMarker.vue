@@ -55,10 +55,8 @@ export default {
 		if (this.provider) {
 			const strategy = this.strategyManager.getStrategy(this.provider);
 			const marker = strategy.doAction();
+			const props = this.$props;
 
-			const coordinates = this.coordinates;
-			const icon = this.icon;
-			const tooltip = this.title;
 			Object.assign(this.icon, {
 				...iconDefault,
 				...this.icon,
@@ -67,11 +65,11 @@ export default {
 			if (this.$slots.default) {
 				return h(
 					marker,
-					{ props: { coordinates, tooltip, icon } },
+					{ props },
 					this.$slots.default.map(slot => slot),
 				);
 			} else {
-				return h(marker, { props: { coordinates, tooltip, icon } });
+				return h(marker, { props });
 			}
 		}
 		return null;

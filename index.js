@@ -4,6 +4,7 @@ import VueHeatmap from './src/components/VueHeatmap.vue'
 import VueMarker from './src/components/VueMarker.vue'
 import VueCallout from './src/components/VueCallout.vue'
 import VuePolyline from './src/components/VuePolyline.vue'
+import VuePolygonMap from './src/components/VuePolygonMap.vue'
 
 export function install (Vue, options) {
 
@@ -11,7 +12,7 @@ export function install (Vue, options) {
 		Vue.use(VueGoogleMaps, {
 			load: {
 				key: options.key,
-				libraries: ['places', 'visualization']
+				libraries: ['places', 'visualization', 'drawing']
 			},
 			installComponents: true,
 		});
@@ -22,6 +23,7 @@ export function install (Vue, options) {
 	Vue.component(VueMarker.name, VueMarker.default);
 	Vue.component(VueCallout.name, VueCallout.default);
 	Vue.component(VuePolyline.name, VuePolyline.default);
+	Vue.component(VuePolygonMap.name, VuePolygonMap.default);
 };
 
 export { default as VueMaps } from './src/components/VueMaps.vue'
@@ -29,3 +31,4 @@ export { default as VueHeatmap } from './src/components/VueHeatmap.vue'
 export { default as VueMarker } from './src/components/VueMarker.vue'
 export { default as VueCallout } from './src/components/VueCallout.vue'
 export { default as VuePolyline } from './src/components/VuePolyline.vue'
+export { default as VuePolygonMap } from './src/components/VuePolygonMap.vue'
