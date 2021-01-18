@@ -48,7 +48,8 @@ export default {
 	},
 	data() {
 		return {
-			latlngs: this.coordinates ? this.coordinates : [],
+			editableLayers: undefined,
+			drawControl : undefined,
 			ready: false,
 			parentContainer: {},
 			url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -79,8 +80,9 @@ export default {
 	methods: {
 		initDraw() {
 			const { map } = this;
-			var editableLayers = new L.FeatureGroup();
-			map.addLayer(editableLayers);
+			if (this.editableLayers) map.removeLayer(this.editableLayers);
+			this.editableLayers = new L.FeatureGroup();
+			map.addLayer(this.editableLayers);
 
 			// define custom marker
 			var options = {
@@ -106,28 +108,29 @@ export default {
 			};
 
 			// Initialise the draw control and pass it the FeatureGroup of editable layers
-			var drawControl = new L.Control.Draw(options);
-			map.addControl(drawControl);
+			if(this.drawControl) map.removeControl(this.drawControl);
+			this.drawControl = new L.Control.Draw(options);
+			map.addControl(this.drawControl);
 
-			editableLayers = new L.FeatureGroup();
-			map.addLayer(editableLayers);
+			//if (this.editableLayers) map.removeLayer(this.editableLayers);
+			this.editableLayers = new L.FeatureGroup();
+			map.addLayer(this.editableLayers);
 
 			map.on(L.Draw.Event.CREATED, e => {
 				var type = e.layerType,
 					layer = e.layer;
 
 				if (type === 'polygon') {
-					editableLayers.addLayer(layer);
+					this.editableLayers.addLayer(layer);
 
-					drawControl.setDrawingOptions({
+					this.drawControl.setDrawingOptions({
 						polygon: false,
 					});
-					map.removeControl(drawControl);
-					map.addControl(drawControl);
+					map.removeControl(this.drawControl);
+					map.addControl(this.drawControl);
 
 					// here you can get it in geojson format
 					var geojson = layer.toGeoJSON();
-					console.log('geo', geojson);
 					EventBus.$emit('update:area-points', geojson);
 				}
 			});
@@ -139,6 +142,16 @@ export default {
 	},
 	beforeDestroy() {
 		this.unloadDraw();
+	},
+	watch: {
+		coordinates: {
+			handler: function () {
+				if (!this.coordinates.length) {
+					this.initDraw();
+				}
+			},
+			deep: true,
+		},
 	},
 };
 </script>
