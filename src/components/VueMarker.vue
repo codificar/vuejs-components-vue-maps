@@ -33,7 +33,15 @@ export default {
 			type: Object,
 			default: () => new Object(),
 		},
+		clickable: {
+			type: Boolean,
+			twoWay: true,
+			default: true,
+		},
 		title: {
+			type: String,
+		},
+		label: {
 			type: String,
 		},
 		description: {

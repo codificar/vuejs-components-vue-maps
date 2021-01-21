@@ -1,9 +1,11 @@
 <template>
 	<div>
 		<gmap-marker
-			:position="this.coordinates"
-			:title="this.title"
+			:position="coordinates"
+			:title="title"
+			:label="label"
 			:icon="getIcon"
+			:clickable="clickable"
 			@click="toggleInfoWindow"
 		>
 		</gmap-marker>
@@ -34,7 +36,15 @@ export default {
 			type: Object,
 			default: () => new Object(),
 		},
+		clickable: {
+			type: Boolean,
+			twoWay: true,
+			default: true,
+		},
 		title: {
+			type: String,
+		},
+		label: {
 			type: String,
 		},
 		description: {
@@ -69,7 +79,12 @@ export default {
 				f: 'px',
 				b: 'px',
 			};
-			const scaledSize = { width: 20, height: 20, f: 'px', b: 'px' };
+			const scaledSize = {
+				width: this.icon.size[0],
+				height: this.icon.size[1],
+				f: 'px',
+				b: 'px',
+			};
 			const rotation = this.icon.rotation;
 
 			return { url, size, scaledSize, rotation };
@@ -91,10 +106,12 @@ export default {
 
 	methods: {
 		toggleInfoWindow: function () {
-			this.infoWindowPos = this.coordinates;
-			this.infoContent = this.getInfoWindowContent();
+			if(this.clickable){
+				this.infoWindowPos = this.coordinates;
+				this.infoContent = this.getInfoWindowContent();
 
-			this.infoWinOpen = !this.infoWinOpen;
+				this.infoWinOpen = !this.infoWinOpen;
+			}
 		},
 
 		getInfoWindowContent: function () {

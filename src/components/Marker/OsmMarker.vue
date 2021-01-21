@@ -21,6 +21,11 @@ export default {
 			type: [Object, Array],
 			custom: true,
 			default: () => [0, 0],
+		},		
+		clickable: {
+			type: Boolean,
+			twoWay: true,
+			default: true,
 		},
 		tooltip: {
 			type: String,
@@ -28,6 +33,12 @@ export default {
 		icon: {
 			type: Object,
 			default: () => new Object(),
+		},
+		title: {
+			type: String,
+		},
+		label: {
+			type: String,
 		},
 	},
 
@@ -55,9 +66,12 @@ export default {
 
 	methods: {
 		toggleInfoWindow: function () {
-			this.infoWindowPos = this.coordinate;
-			this.infoContent = this.getInfoWindowContent();
-			this.infoWinOpen = true;
+			if(this.clickable){
+				this.infoWindowPos = this.coordinates;
+				this.infoContent = this.getInfoWindowContent();
+
+				this.infoWinOpen = !this.infoWinOpen;
+			}
 		},
 		getInfoWindowContent: function () {
 			if (!this.$slots.default) {
