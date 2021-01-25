@@ -1,6 +1,6 @@
 <template>
-	<l-marker :lat-lng="this.marker" :icon="getIcon">
-		<l-popup v-if="this.tooltip">
+	<l-marker :lat-lng="marker" :icon="getIcon" @click="toggleInfoWindow">
+		<l-popup v-if="infoWinOpen">
 			<div v-html="getInfoWindowContent()"></div>
 		</l-popup>
 	</l-marker>
@@ -27,9 +27,6 @@ export default {
 			twoWay: true,
 			default: true,
 		},
-		tooltip: {
-			type: String,
-		},
 		icon: {
 			type: Object,
 			default: () => new Object(),
@@ -44,12 +41,7 @@ export default {
 
 	data() {
 		return {
-			infoContent: '',
-			infoWinOpen: false,
-			infoWindowPos: {
-				lat: 0,
-				lng: 0,
-			},
+			infoWinOpen: true,
 			marker: this.coordinates ? latLng(this.coordinates) : null,
 		};
 	},
@@ -67,9 +59,6 @@ export default {
 	methods: {
 		toggleInfoWindow: function () {
 			if(this.clickable){
-				this.infoWindowPos = this.coordinates;
-				this.infoContent = this.getInfoWindowContent();
-
 				this.infoWinOpen = !this.infoWinOpen;
 			}
 		},
