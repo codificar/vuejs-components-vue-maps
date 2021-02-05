@@ -1,5 +1,8 @@
 <template>
-	<l-marker :lat-lng="marker" :icon="getIcon" @click="toggleInfoWindow">
+	<l-marker :lat-lng="marker" 
+			:icon="getIcon" 
+			:style="iconStyle"
+			@click="toggleInfoWindow">
 		<l-popup v-if="infoWinOpen">
 			<div v-html="getInfoWindowContent()"></div>
 		</l-popup>
@@ -53,6 +56,10 @@ export default {
 				iconSize: this.icon.size,
 				iconAnchor: this.icon.anchor,
 			});
+		},
+		iconStyle() {
+			let rotation = this.icon.rotation;
+			return { transform: 'rotate(' + rotation + 'deg)'	};
 		},
 	},
 

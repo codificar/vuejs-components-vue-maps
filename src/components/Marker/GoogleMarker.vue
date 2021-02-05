@@ -5,6 +5,7 @@
 			:title="title"
 			:label="label"
 			:icon="getIcon"
+			:style="iconStyle"
 			:clickable="clickable"
 			@click="toggleInfoWindow"
 		>
@@ -89,24 +90,16 @@ export default {
 
 			return { url, size, scaledSize, rotation };
 		},
-	},
 
-	watch: {
-		getIcon() {
-			const url = this.icon.url;
+		iconStyle() {
 			let rotation = this.icon.rotation;
-			setTimeout(() => {
-				// eslint-disable-next-line no-undef
-				$(`img[src*="${url}"]`)
-					.parent()
-					.css('transform', 'rotate(' + rotation + 'deg)');
-			}, 50);
+			return { transform: 'rotate(' + rotation + 'deg)'	};
 		},
 	},
 
 	methods: {
-		toggleInfoWindow: function () {
-			if(this.clickable){
+		toggleInfoWindow: function() {
+			if (this.clickable) {
 				this.infoWindowPos = this.coordinates;
 				this.infoContent = this.getInfoWindowContent();
 
@@ -114,7 +107,7 @@ export default {
 			}
 		},
 
-		getInfoWindowContent: function () {
+		getInfoWindowContent: function() {
 			if (!this.$slots.default) {
 				return '<div></div>';
 			}
@@ -123,12 +116,3 @@ export default {
 	},
 };
 </script>
-<style>
-.rotate {
-	-webkit-transform: rotate(90deg);
-	-moz-transform: rotate(90deg);
-	-o-transform: rotate(90deg);
-	-ms-transform: rotate(90deg);
-	transform: rotate(90deg);
-}
-</style>
