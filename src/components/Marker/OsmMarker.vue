@@ -1,8 +1,10 @@
 <template>
-	<l-marker :lat-lng="marker" 
-			:icon="getIcon" 
-			:style="iconStyle"
-			@click="toggleInfoWindow">
+	<l-marker
+		:lat-lng="getCoordinates"
+		:icon="getIcon"
+		:style="iconStyle"
+		@click="toggleInfoWindow"
+	>
 		<l-popup v-if="infoWinOpen">
 			<div v-html="getInfoWindowContent()"></div>
 		</l-popup>
@@ -24,7 +26,7 @@ export default {
 			type: [Object, Array],
 			custom: true,
 			default: () => [0, 0],
-		},		
+		},
 		clickable: {
 			type: Boolean,
 			twoWay: true,
@@ -45,7 +47,6 @@ export default {
 	data() {
 		return {
 			infoWinOpen: true,
-			marker: this.coordinates ? latLng(this.coordinates) : null,
 		};
 	},
 
@@ -57,19 +58,23 @@ export default {
 				iconAnchor: this.icon.anchor,
 			});
 		},
+		getCoordinates() {
+			console.log(this.coordinates);
+			return this.coordinates ? latLng(this.coordinates) : null;
+		},
 		iconStyle() {
 			let rotation = this.icon.rotation;
-			return { transform: 'rotate(' + rotation + 'deg)'	};
+			return { transform: 'rotate(' + rotation + 'deg)' };
 		},
 	},
 
 	methods: {
-		toggleInfoWindow: function () {
-			if(this.clickable){
+		toggleInfoWindow: function() {
+			if (this.clickable) {
 				this.infoWinOpen = !this.infoWinOpen;
 			}
 		},
-		getInfoWindowContent: function () {
+		getInfoWindowContent: function() {
 			if (!this.$slots.default) {
 				return '<div></div>';
 			}

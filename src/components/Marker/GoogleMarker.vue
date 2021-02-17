@@ -93,7 +93,7 @@ export default {
 
 		iconStyle() {
 			let rotation = this.icon.rotation;
-			return { transform: 'rotate(' + rotation + 'deg)'	};
+			return { transform: 'rotate(' + rotation + 'deg)' };
 		},
 	},
 
