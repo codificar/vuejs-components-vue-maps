@@ -3,6 +3,8 @@
 		:lat-lng="getCoordinates"
 		:icon="getIcon"
 		:style="iconStyle"
+		:draggable="draggable"
+		@update:latLng="updateCoordinates"
 		@click="toggleInfoWindow"
 	>
 		<l-popup v-if="infoWinOpen">
@@ -32,6 +34,11 @@ export default {
 			twoWay: true,
 			default: true,
 		},
+		draggable: {
+			type: Boolean,
+			twoWay: true,
+			default: false,
+		},
 		icon: {
 			type: Object,
 			default: () => new Object(),
@@ -59,7 +66,6 @@ export default {
 			});
 		},
 		getCoordinates() {
-			console.log(this.coordinates);
 			return this.coordinates ? latLng(this.coordinates) : null;
 		},
 		iconStyle() {
@@ -69,6 +75,13 @@ export default {
 	},
 
 	methods: {
+		updateCoordinates(value) {
+			const coordinate = {
+				latitude: value.lat,
+				longitude: value.lng,
+			};
+			this.$parent.$emit('drag', coordinate);
+		},
 		toggleInfoWindow: function() {
 			if (this.clickable) {
 				this.infoWinOpen = !this.infoWinOpen;

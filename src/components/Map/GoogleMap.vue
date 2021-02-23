@@ -46,8 +46,8 @@ export default {
 		getMarker(event) {
 			const latlng = {
 				latidude: event.latLng.lat(),
-				longitude: event.latLng.lng()
-			}
+				longitude: event.latLng.lng(),
+			};
 			this.$parent.$emit('click-map', latlng);
 		},
 	},

@@ -76,10 +76,10 @@ export default {
 		});
 	},
 	watch: {
-		center: function () {
+		center: function() {
 			this.$mapObject.setCenter(this.center);
 		},
-		points: function () {
+		points: function() {
 			this.$heatmap.setMap(null);
 			this.$heatmap = new google.maps.visualization.HeatmapLayer({
 				data: this.heatmapPoints,

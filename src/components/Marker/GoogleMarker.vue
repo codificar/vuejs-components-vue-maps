@@ -7,6 +7,8 @@
 			:icon="getIcon"
 			:style="iconStyle"
 			:clickable="clickable"
+			:draggable="draggable"
+			@drag="updateCoordinates"
 			@click="toggleInfoWindow"
 		>
 		</gmap-marker>
@@ -41,6 +43,11 @@ export default {
 			type: Boolean,
 			twoWay: true,
 			default: true,
+		},
+		draggable: {
+			type: Boolean,
+			twoWay: true,
+			default: false,
 		},
 		title: {
 			type: String,
@@ -98,6 +105,13 @@ export default {
 	},
 
 	methods: {
+		updateCoordinates(value) {
+			const coordinate = {
+				latitude: value.latLng.lat(),
+				longitude: value.latLng.lng(),
+			};
+			this.$parent.$emit('drag', coordinate);
+		},
 		toggleInfoWindow: function() {
 			if (this.clickable) {
 				this.infoWindowPos = this.coordinates;

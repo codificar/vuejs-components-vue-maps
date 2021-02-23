@@ -9,6 +9,11 @@
 | `centerMarker` | `Object`| `NO` | `{ url: defaultPin,`<br>`size: [20, 20],`<br>`anchor: [20, 10],`<br>`rotation: 0 }` | The marker image for the center marker.
 | `displayCenterMarker` | `Boolean`| `NO` | `true` | Should set the center marker as visible?
 
+## Events
+| Event | Note|
+|---|---|
+| `click-map` | Returns the coordinate of the click.
+
 ## Usage
 
 ```js

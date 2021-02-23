@@ -8,7 +8,13 @@
 | `icon` | `Object`| `NO` | `{ url: defaultPin,`<br>`size: [20, 20],`<br>`anchor: [20, 10],`<br>`rotation: 0 }` | The props of the marker.
 | `title` | `String`| `NO` | `''` | The title of the marker.
 | `description` | `String`| `NO` | `''` | The description of the marker.
+| `clickable` | `Boolean`| `true` | `''` | The marker can be clicked.
+| `draggable` | `Boolean`| `false` | `''` | The marker can be dragged.
 
+## Events
+| Event | Note|
+|---|---|
+| `drag` | Returns the new coordinate of the marker.
 ## Usage
 
 ```js
