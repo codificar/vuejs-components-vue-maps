@@ -1,5 +1,9 @@
 <template>
-	<l-map :zoom="zoom" :center="center">
+	<l-map 
+		:zoom="zoom" 
+		:center="center"
+		@click="getMarker"
+		>
 		<l-tile-layer :url="url" :attribution="attribution" />
 		<l-marker v-if="displayCenterMarker" :lat-lng="center">
 			<l-icon
@@ -59,6 +63,15 @@ export default {
 			...centerMarkerDefault,
 			...this.centerMarker,
 		});
+	},
+	methods: {
+		getMarker(event) {
+			const latlng = {
+				latidude: event.latlng.lat,
+				longitude: event.latlng.lng
+			}
+			this.$parent.$emit('click-map', latlng);
+		},
 	},
 };
 </script>
