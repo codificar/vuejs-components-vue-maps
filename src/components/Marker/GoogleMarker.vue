@@ -8,7 +8,7 @@
 			:style="iconStyle"
 			:clickable="clickable"
 			:draggable="draggable"
-			@drag="updateCoordinates"
+			@dragend="updateCoordinates"
 			@click="toggleInfoWindow"
 		>
 		</gmap-marker>
