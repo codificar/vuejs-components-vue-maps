@@ -38,6 +38,11 @@ export default {
 			twoWay: true,
 			default: true,
 		},
+		draggable: {
+			type: Boolean,
+			twoWay: true,
+			default: false,
+		},
 		title: {
 			type: String,
 		},
