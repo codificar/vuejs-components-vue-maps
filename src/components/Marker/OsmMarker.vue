@@ -89,7 +89,8 @@ export default {
 		},
 		getInfoWindowContent: function() {
 			if (!this.$slots.default) {
-				return '<div></div>';
+				let text = this.title ? this.title : '';
+				return `<div>${text}</div>`;
 			}
 			return this.$slots.default[0].componentOptions.propsData.html();
 		},

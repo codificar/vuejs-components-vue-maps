@@ -44,6 +44,9 @@ export default {
 			type: Number,
 			default: () => 5,
 		},
+		markersGoogle: {
+			type: Array
+		}
 	},
 	data() {
 		return {

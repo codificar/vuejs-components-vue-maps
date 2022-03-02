@@ -38,6 +38,10 @@ export default {
 			type: Number,
 			default: () => 5,
 		},
+		markersGoogle: {
+			type: Array,
+			default: () => []
+		}
 	},
 	computed: {
 		mapWidth() {
@@ -87,6 +91,23 @@ export default {
 			});
 			this.$heatmap.setMap(this.$mapObject);
 		},
+		markersGoogle: function() {
+			this.markersGoogle.forEach(item => {
+				let myLatlng = new google.maps.LatLng(item.lat, item.lng);
+
+				var marker = new google.maps.Marker({
+					position: myLatlng,
+					title: item.label_text,
+					label: {
+						text: item.label_text,
+						color: item.label_color
+					}
+				});
+
+				// To add the marker to the map, call setMap();
+				marker.setMap(this.$mapObject);
+			});
+		}
 	},
 };
 </script>
