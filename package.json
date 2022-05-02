@@ -15,7 +15,6 @@
     "hot": "mix watch --hot",
     "prod": "npm run production",
     "production": "mix --production"
-
   },
   "author": "codificar",
   "license": "ISC",
@@ -26,7 +25,6 @@
     "leaflet": "^1.7.1",
     "leaflet-draw": "^1.0.4",
     "leaflet.heat": "^0.2.0",
-    "vue": "^2.6.12",
     "vue-browser-geolocation": "^1.8.0",
     "vue2-google-maps": "^0.10.7",
     "vue2-leaflet": "^2.6.0"
@@ -37,6 +35,9 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^7.1.0",
     "laravel-mix": "^6.0.6",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "vue": "^2.5.17",
+    "vue-loader": "^15.9.7",
+    "vue-template-compiler": "^2.6.14"
   }
 }
