@@ -18,7 +18,7 @@
 			:opened="infoWinOpen"
 			@closeclick="infoWinOpen = false"
 		>
-			<div v-html="infoContent"></div>
+			<slot />
 		</gmap-info-window>
 	</div>
 </template>
@@ -115,17 +115,8 @@ export default {
 		toggleInfoWindow: function() {
 			if (this.clickable) {
 				this.infoWindowPos = this.coordinates;
-				this.infoContent = this.getInfoWindowContent();
-
 				this.infoWinOpen = !this.infoWinOpen;
 			}
-		},
-
-		getInfoWindowContent: function() {
-			if (!this.$slots.default) {
-				return '<div></div>';
-			}
-			return this.$slots.default[0].componentOptions.propsData.html();
 		},
 	},
 };
