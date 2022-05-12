@@ -8,7 +8,7 @@
 		@click="toggleInfoWindow"
 	>
 		<l-popup v-if="infoWinOpen">
-			<div v-html="getInfoWindowContent()"></div>
+			<slot />
 		</l-popup>
 	</l-marker>
 </template>
@@ -86,12 +86,6 @@ export default {
 			if (this.clickable) {
 				this.infoWinOpen = !this.infoWinOpen;
 			}
-		},
-		getInfoWindowContent: function() {
-			if (!this.$slots.default) {
-				return '<div></div>';
-			}
-			return this.$slots.default[0].componentOptions.propsData.html();
 		},
 	},
 };
