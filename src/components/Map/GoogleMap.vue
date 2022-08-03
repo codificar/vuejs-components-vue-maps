@@ -53,3 +53,9 @@ export default {
 	},
 };
 </script>
+
+<style lang="css">
+.vue-map-hidden {
+	display: block;
+}
+</style>
