@@ -12,6 +12,10 @@ export default {
 			type: String,
 		},
 
+		drawControll: {
+			type: Boolean,
+		},
+
 		center: {
 			type: Object,
 			default: () => {
@@ -50,7 +54,12 @@ export default {
 	render(h) {
 		const strategy = this.strategyManager.getStrategy(this.provider);
 		const mapProvider = strategy.doAction();
-		return h(mapProvider, { props: this.$props });
+		return h(mapProvider, {
+			props: {
+			...this.$props,
+			areaPoints: this.coordinates,
+			},
+		});
 	},
 };
 </script>

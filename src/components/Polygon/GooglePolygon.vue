@@ -1,42 +1,42 @@
 <template>
-	<gmap-map
-		ref="map"
-		:center="center"
-		:zoom="zoom"
-		:options="{
-			scrollwheel: scrollwheel,
-			zoomControl: zoomControl,
-			mapTypeControl: mapTypeControl,
-			scaleControl: scaleControl,
-			streetViewControl: streetViewControl,
-			rotateControl: rotateControl,
-			fullscreenControl: fullscreenControl,
-		}"
-		style="width: 100%; height: 100%"
-	>
-		<gmap-polygon
-			v-for="poly in polygons"
-			:paths="poly"
-			v-bind:key="poly.id"
-			:editable="false"
-			@paths_changed="updateEdited($event, poly.id)"
-			:options="{
-				fillColor: poly.fillColor,
-				fillOpacity: poly.fillOpacity,
-				strokeOpacity: 0.8,
-				strokeWeight: 1,
-			}"
-			ref="polygon"
-		></gmap-polygon>
-	</gmap-map>
+  <gmap-map
+    ref="map"
+    :center="center"
+    :zoom="zoom"
+    :options="{
+      scrollwheel: scrollwheel,
+      zoomControl: zoomControl,
+      mapTypeControl: mapTypeControl,
+      scaleControl: scaleControl,
+      streetViewControl: streetViewControl,
+      rotateControl: rotateControl,
+      fullscreenControl: fullscreenControl,
+    }"
+    style="width: 100%; height: 100%"
+  >
+    <gmap-polygon
+      v-for="poly in polygons"
+      :paths="poly"
+      v-bind:key="poly.id"
+      :editable="false"
+      @paths_changed="updateEdited($event, poly.id)"
+      :options="{
+        fillColor: poly.fillColor,
+        fillOpacity: poly.fillOpacity,
+        strokeOpacity: 0.8,
+        strokeWeight: 1,
+      }"
+      ref="polygon"
+    ></gmap-polygon>
+  </gmap-map>
 </template>
 
 <style>
 .fixo {
-	float: right;
-	margin-right: 10px;
-	margin-top: 0px;
-	z-index: 1000;
+  float: right;
+  margin-right: 10px;
+  margin-top: 0px;
+  z-index: 1000;
 }
 </style>
 
@@ -45,138 +45,145 @@
 import EventBus from 'src/utils/eventBus.js';
 
 export default {
-	props: {
-		/**
-		 * The coordinates of the marker
-		 */
-		coordinates: {
-			type: [Object, Array],
-			custom: true,
-			default: () => [0, 0],
-		},
-		center: {
-			type: Object,
-		},
-		width: {
-			type: [String, Number],
-			default: () => '100%',
-		},
-		height: {
-			type: [String, Number],
-			default: () => '100%',
-		},
-		color: {
-			type: String,
-		},
-	},
+  name: 'GooglePolygon',
+  props: {
+    drawControll: {
+      type: Boolean,
+      default: false,
+    },
+    areaPoints: {
+      type: Array,
+      required: true,
+    },
+    center: {
+      type: Object,
+    },
+    width: {
+      type: [String, Number],
+      default: () => '100%',
+    },
+    height: {
+      type: [String, Number],
+      default: () => '100%',
+    },
+    color: {
+      type: String,
+    },
+  },
 
-	data() {
-		return {
-			scrollwheel: true,
-			zoom: 12,
-			zoomControl: true,
-			mapTypeControl: false,
-			scaleControl: true,
-			streetViewControl: false,
-			rotateControl: true,
-			fullscreenControl: true,
-			edited: null,
-			polygons: [],
-		};
-	},
+  data() {
+    return {
+      scrollwheel: true,
+      zoom: 12,
+      zoomControl: true,
+      mapTypeControl: false,
+      scaleControl: true,
+      streetViewControl: false,
+      rotateControl: true,
+      fullscreenControl: true,
+      edited: null,
+      polygons: [],
+      drawingManager: null,
+    };
+  },
 
-	created() {
-		this.polygons.push(this.coordinates);
-	},
+  created() {
+    this.polygons.push(this.areaPoints);
+  },
 
-	mounted() {
-		this.loadMapDrawingManager();
-	},
+  mounted() {
+    this.loadMapDrawingManager();
+  },
 
-	methods: {
-		savePolygon(paths) {
-			this.polygons.push(paths);
-		},
+  methods: {
+    savePolygon(paths) {
+      this.polygons.push(paths);
+    },
 
-		emitGeoJson(coordinates) {
-			const GeoJson = {
-				type: 'Feature',
-				geometry: {
-					type: 'Polygon',
-					coordinates: [coordinates],
-				},
-				properties: {},
-			};
-			EventBus.$emit('update:area-points', GeoJson);
-		},
+    emitGeoJson(coordinates) {
+      const GeoJson = {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [coordinates],
+        },
+        properties: {},
+      };
+      EventBus.$emit('update:area-points', GeoJson);
+    },
 
-		loadMapDrawingManager() {
-			const self = this;
-			this.$gmapApiPromiseLazy().then(() => {
-				const drawingManager = new google.maps.drawing.DrawingManager({
-					drawingControl: self.coordinates.length ? false : true,
-					drawingControlOptions: {
-						position: google.maps.ControlPosition.TOP_CENTER,
-						drawingModes: [google.maps.drawing.OverlayType.POLYGON],
-					},
-					polygonOptions: {
-						fillColor: '#0099FF',
-						fillOpacity: 0.7,
-						strokeColor: '#000',
-						strokeWeight: 4,
-						editable: true,
-					},
-				});
-				drawingManager.setMap(this.$refs.map.$mapObject);
+    loadMapDrawingManager() {
+      if (this.drawingManager) {
+        return;
+      }
+      const self = this;
+      let isDraw = true;
+      if (this.drawControll) {
+        isDraw = true;
+      } else if (this.areaPoints.length) {
+        isDraw = false;
+      }
+      this.$gmapApiPromiseLazy().then(() => {
+        const drawingManager = new google.maps.drawing.DrawingManager({
+          drawingControl: isDraw,
+          drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [google.maps.drawing.OverlayType.POLYGON],
+          },
+          polygonOptions: {
+            fillColor: '#0099FF',
+            fillOpacity: 0.7,
+            strokeColor: '#000',
+            strokeWeight: 4,
+            editable: true,
+          },
+        });
+        drawingManager.setMap(this.$refs.map.$mapObject);
 
-				google.maps.event.addListener(
-					drawingManager,
-					'overlaycomplete',
-					function (event) {
-						// Get overlay paths
-						let paths = event.overlay.getPaths().getArray();
-						// Remove overlay from map
-						event.overlay.setMap(null);
+        google.maps.event.addListener(
+          drawingManager,
+          'overlaycomplete',
+          function (event) {
+            let paths = event.overlay.getPaths().getArray();
+            if (isDraw) {
+              event.overlay.setMap(null);
+              drawingManager.setDrawingMode(null);
+            }
+            self.savePolygon(paths);
+          },
+        );
 
-						// Disable drawingManager
-						drawingManager.setDrawingMode(null);
+        google.maps.event.addListener(
+          drawingManager,
+          'polygoncomplete',
+          function (polygon) {
+            drawingManager.setOptions({
+              drawingControl: isDraw,
+            });
 
-						// Create Polygon
-						self.savePolygon(paths);
-					},
-				);
+            var coordinates = polygon
+              .getPath()
+              .getArray()
+              .map((point) => [point.lng(), point.lat()]);
 
-				google.maps.event.addListener(
-					drawingManager,
-					'polygoncomplete',
-					function (polygon) {
-						drawingManager.setOptions({
-							drawingControl: false,
-						});
+            self.emitGeoJson(coordinates);
+          },
+        );
+        self.drawingManager = drawingManager;
+      });
+    },
+  },
 
-						var coordinates = polygon
-							.getPath()
-							.getArray()
-							.map(point => [point.lng(), point.lat()]);
-
-						// Create Polygon
-						self.emitGeoJson(coordinates);
-					},
-				);
-			});
-		},
-	},
-
-	watch: {
-		coordinates: {
-			handler: function () {
-				if (!this.coordinates.length) {
-					this.polygons = [];
-					this.loadMapDrawingManager();
-				}
-			},
-			deep: true,
-		},
-	},
+  watch: {
+    areaPoints: {
+      handler: function () {
+        if (!this.areaPoints.length) {
+          this.polygons = [];
+          this.loadMapDrawingManager();
+        }
+      },
+      deep: true,
+    },
+  },
 };
 </script>
