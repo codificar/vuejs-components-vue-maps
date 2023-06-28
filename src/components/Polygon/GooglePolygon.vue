@@ -15,11 +15,11 @@
     style="width: 100%; height: 100%"
   >
     <gmap-polygon
-      v-for="poly in polygons"
+      v-for="(poly, index) in polygons"
       :paths="poly"
-      v-bind:key="poly.id"
-      :editable="false"
-      @paths_changed="updateEdited($event, poly.id)"
+      v-bind:key="index"
+      :editable="true"
+      @paths_changed="updateEdited($event, index)"
       :options="{
         fillColor: poly.fillColor,
         fillOpacity: poly.fillOpacity,
@@ -84,6 +84,7 @@ export default {
       edited: null,
       polygons: [],
       drawingManager: null,
+      editedPolygons: [],
     };
   },
 
@@ -97,7 +98,29 @@ export default {
 
   methods: {
     savePolygon(paths) {
-      this.polygons.push(paths);
+			this.polygons.push(paths);
+		},
+
+    updateEdited(mvcArray, index) {
+      const editedPaths = [];
+
+      for (let i = 0; i < mvcArray.getLength(); i++) {
+        const path = [];
+
+        for (let j = 0; j < mvcArray.getAt(i).getLength(); j++) {
+          const point = mvcArray.getAt(i).getAt(j);
+          path.push({ lat: point.lat(), lng: point.lng() });
+        }
+
+        editedPaths.push(path);
+      }
+
+      this.$set(this.editedPolygons, index, editedPaths);
+      console.log(editedPaths);
+
+      this.areaPoints = editedPaths;
+
+      EventBus.$emit("update:area-points", editedPaths);
     },
 
     emitGeoJson(coordinates) {
@@ -149,6 +172,7 @@ export default {
               event.overlay.setMap(null);
               drawingManager.setDrawingMode(null);
             }
+            console.log(paths, "paths");
             self.savePolygon(paths);
           },
         );
@@ -159,6 +183,7 @@ export default {
           function (polygon) {
             drawingManager.setOptions({
               drawingControl: isDraw,
+              editable: true,
             });
 
             var coordinates = polygon
@@ -167,6 +192,10 @@ export default {
               .map((point) => [point.lng(), point.lat()]);
 
             self.emitGeoJson(coordinates);
+            console.log('aqui')
+            google.maps.event.addListener(polygon, 'click', function(event){
+              polygon.setEditable(true);
+            })
           },
         );
         self.drawingManager = drawingManager;
@@ -184,6 +213,15 @@ export default {
       },
       deep: true,
     },
+  },
+  editedPolygons: {
+    handler: function (newVal) {
+      const areaPoints = newVal.map((poly) =>
+        poly.map((path) => path.map((point) => `${point.lat},${point.lng}`).join(';'))
+      );
+      this.$emit('update:area-points', areaPoints);
+    },
+    deep: true,
   },
 };
 </script>
