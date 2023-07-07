@@ -25,7 +25,7 @@
       @click="handlePolygonClick(polygon.id)"
     ></gmap-polygon>
     <div v-if="selectedPolygons.length > 0" class="delete-button">
-      <button class="delete-button__button" @click="deleteSelectedPolygons">Excluir Polígono</button>
+      <button class="delete-button__button delete-button__button--red" @click="deleteSelectedPolygons">Excluir Polígono</button>
     </div>
   </gmap-map>
 </template>
@@ -38,9 +38,14 @@
   z-index: 1000;
 }
 
-.delete-button__button {
-  color: red;
+.delete-button__button--red {
+  background-color: red;
+  color: black;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 15px;
 }
+
 </style>
 
 <script>
