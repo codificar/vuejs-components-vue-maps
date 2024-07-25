@@ -40,8 +40,9 @@
 
 .delete-button__button--red {
   background-color: red;
-  color: black;
-  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  border-radius: 16px;
   padding: 5px;
   margin-right: 15px;
 }
@@ -119,11 +120,11 @@ export default {
       };
       const coordinates = [];
 
-      for (let i = 0; i < paths[0].g.length; i++) {
-        const latitude = paths[0].g[i].lat();
-        const longitude = paths[0].g[i].lng();
-        coordinates.push({ lat: latitude, lng: longitude });
-      }
+      for (let i = 0; i < paths[0].Eg.length; i++) {
+		const latitude = paths[0].Eg[i].lat();
+		const longitude = paths[0].Eg[i].lng();
+		coordinates.push({ lat: latitude, lng: longitude });
+	  }
       this.areaPoints.push(coordinates);
 
       this.polygons.push(newPolygon);
