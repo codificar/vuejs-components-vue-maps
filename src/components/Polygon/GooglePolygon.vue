@@ -120,11 +120,19 @@ export default {
       };
       const coordinates = [];
 
-      for (let i = 0; i < paths[0].Eg.length; i++) {
-		const latitude = paths[0].Eg[i].lat();
-		const longitude = paths[0].Eg[i].lng();
-		coordinates.push({ lat: latitude, lng: longitude });
-	  }
+      // Tenta achar o indice de caminho certo independente do ambiente
+      const pathArray = paths[0].Eg || paths[0].g || paths[0].e || (paths[0].getArray ? paths[0].getArray() : []);
+
+      if (!pathArray || !pathArray.length) {
+        console.error('Nenhum caminho encontrado no objeto paths[0]');
+        return;
+      }
+
+      for (let i = 0; i < pathArray.length; i++) {
+        const latitude = pathArray[i].lat();
+        const longitude = pathArray[i].lng();
+        coordinates.push({ lat: latitude, lng: longitude });
+      }
       this.areaPoints.push(coordinates);
 
       this.polygons.push(newPolygon);
